@@ -15,7 +15,7 @@ units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]
 validate(units, schema="../schemas/units.schema.yaml")
 
 # contigs in reference genome
-contigs = pd.read_table(config["ref"]["genome"] + ".fai",
+contigs = pd.read_table(config["ref"]["genome_index"],
                         header=None, usecols=[0], squeeze=True, dtype=str)
 
 
