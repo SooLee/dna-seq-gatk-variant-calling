@@ -1,5 +1,6 @@
 rule vcf_to_tsv:
     input:
+        config["ref"]["genome_index"],
         "annotated/all.vcf.gz"
     output:
         report("tables/calls.tsv.gz", caption="../report/calls.rst", category="Calls")
@@ -13,6 +14,7 @@ rule vcf_to_tsv:
 
 rule plot_stats:
     input:
+        config["ref"]["genome_index"],
         "tables/calls.tsv.gz"
     output:
         depths=report("plots/depths.svg", caption="../report/depths.rst", category="Plots"),

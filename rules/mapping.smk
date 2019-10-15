@@ -1,5 +1,6 @@
 rule trim_reads_se:
     input:
+        config["ref"]["genome_index"],
         unpack(get_fastq)
     output:
         temp("trimmed/{sample}-{unit}.fastq.gz")
@@ -14,6 +15,7 @@ rule trim_reads_se:
 
 rule trim_reads_pe:
     input:
+        config["ref"]["genome_index"],
         unpack(get_fastq)
     output:
         r1=temp("trimmed/{sample}-{unit}.1.fastq.gz"),
@@ -32,6 +34,7 @@ rule trim_reads_pe:
 
 rule map_reads:
     input:
+        config["ref"]["genome_index"],
         reads=get_trimmed_reads
     output:
         temp("mapped/{sample}-{unit}.sorted.bam")
@@ -49,6 +52,7 @@ rule map_reads:
 
 rule mark_duplicates:
     input:
+        config["ref"]["genome_index"],
         "mapped/{sample}-{unit}.sorted.bam"
     output:
         bam=temp("dedup/{sample}-{unit}.bam"),
@@ -63,6 +67,7 @@ rule mark_duplicates:
 
 rule recalibrate_base_qualities:
     input:
+        config["ref"]["genome_index"],
         bam=get_recal_input(),
         bai=get_recal_input(bai=True),
         ref=config["ref"]["genome"],
@@ -79,6 +84,7 @@ rule recalibrate_base_qualities:
 
 rule samtools_index:
     input:
+        config["ref"]["genome_index"],
         "{prefix}.bam"
     output:
         "{prefix}.bam.bai"

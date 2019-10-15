@@ -1,5 +1,6 @@
 rule snpeff:
     input:
+        config["ref"]["genome_index"],
         "filtered/all.vcf.gz",
     output:
         vcf=report("annotated/all.vcf.gz", caption="../report/vcf.rst", category="Calls"),

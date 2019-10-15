@@ -5,6 +5,7 @@ def get_vartype_arg(wildcards):
 
 rule select_calls:
     input:
+        config["ref"]["genome_index"],
         ref=config["ref"]["genome"],
         vcf="genotyped/all.vcf.gz"
     output:
@@ -25,6 +26,7 @@ def get_filter(wildcards):
 
 rule hard_filter_calls:
     input:
+        config["ref"]["genome_index"],
         ref=config["ref"]["genome"],
         vcf="filtered/all.{vartype}.vcf.gz"
     output:
@@ -39,6 +41,7 @@ rule hard_filter_calls:
 
 rule recalibrate_calls:
     input:
+        config["ref"]["genome_index"],
         vcf="filtered/all.{vartype}.vcf.gz"
     output:
         vcf=temp("filtered/all.{vartype}.recalibrated.vcf.gz")
@@ -52,6 +55,7 @@ rule recalibrate_calls:
 
 rule merge_calls:
     input:
+        config["ref"]["genome_index"],
         vcf=expand("filtered/all.{vartype}.{filtertype}.vcf.gz",
                    vartype=["snvs", "indels"],
                    filtertype="recalibrated"

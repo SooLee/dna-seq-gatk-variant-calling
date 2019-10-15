@@ -1,6 +1,7 @@
 if "restrict-regions" in config["processing"]:
     rule compose_regions:
         input:
+            config["ref"]["genome_index"],
             config["processing"]["restrict-regions"]
         output:
             "called/{contig}.regions.bed"
@@ -12,6 +13,7 @@ if "restrict-regions" in config["processing"]:
 
 rule call_variants:
     input:
+        config["ref"]["genome_index"],
         bam=get_sample_bams,
         ref=config["ref"]["genome"],
         known=config["ref"]["known-variants"],
@@ -28,6 +30,7 @@ rule call_variants:
 
 rule combine_calls:
     input:
+        config["ref"]["genome_index"],
         ref=config["ref"]["genome"],
         gvcfs=expand("called/{sample}.{{contig}}.g.vcf.gz", sample=samples.index)
     output:
@@ -40,6 +43,7 @@ rule combine_calls:
 
 rule genotype_variants:
     input:
+        config["ref"]["genome_index"],
         ref=config["ref"]["genome"],
         gvcf="called/all.{contig}.g.vcf.gz"
     output:
@@ -54,6 +58,7 @@ rule genotype_variants:
 
 rule merge_variants:
     input:
+        config["ref"]["genome_index"],
         vcf=expand("genotyped/all.{contig}.vcf.gz", contig=contigs)
     output:
         vcf="genotyped/all.vcf.gz"

@@ -1,5 +1,6 @@
 rule fastqc:
     input:
+        config["ref"]["genome_index"],
         unpack(get_fastq)
     output:
         html="qc/fastqc/{sample}-{unit}.html",
@@ -10,6 +11,7 @@ rule fastqc:
 
 rule samtools_stats:
     input:
+        config["ref"]["genome_index"],
         "recal/{sample}-{unit}.bam"
     output:
         "qc/samtools-stats/{sample}-{unit}.txt"
@@ -21,6 +23,7 @@ rule samtools_stats:
 
 rule multiqc:
     input:
+        config["ref"]["genome_index"],
         expand(["qc/samtools-stats/{u.sample}-{u.unit}.txt",
                 "qc/fastqc/{u.sample}-{u.unit}.zip",
                 "qc/dedup/{u.sample}-{u.unit}.metrics.txt"],
